@@ -1,0 +1,70 @@
+from xml.etree.ElementTree import Element
+import xml.etree.cElementTree as etree
+import os
+
+
+for archivo in os.listdir('C:/Users/Gerardo Couñago/Documents/Python'):
+
+
+
+#Hacemos una copia del archivo .xml a editar
+#shutil.copy(myfile, filecor)
+
+#Analizamos el XML para obtener el elemento raiz
+tree = etree.parse(myfile)
+root = tree.getroot()
+
+#Imprimimos el elemento raiz
+print(root.tag)
+
+
+#Obtenemos el primer elemento hijo del elemento raiz
+caja=root[0]
+print(caja.tag)
+#Asignamos en una variable el contenido del elemento hijo
+errorCode=caja.text
+
+print(errorCode)
+
+
+
+cod_10=errorCode.find("(10)")
+
+print(errorCode[cod_10:])
+
+c10=errorCode[cod_10:]
+
+cod_240=errorCode.find("(240)")
+
+print(errorCode[cod_240:cod_10])
+
+c240=errorCode[cod_240:cod_10]
+
+cod_01=errorCode.find("(01)")
+
+print(errorCode[cod_01:cod_240])
+
+c01=errorCode[cod_01:cod_240]
+
+
+
+
+codigoc=(str(c01)+str(c10)+str(c240))
+
+codigop=codigoc.replace("(10)", "(21)")
+
+
+print(codigop)
+
+root.remove(caja)
+
+nodo_barcode=Element("Barcode")
+nodo_barcode.text=codigop
+
+
+root.insert(0, nodo_barcode)
+
+
+
+new_arc = 'C:/Users/Gerardo Couñago/Documents/Python/Corregido/CAC_20200103_093951_005_02176989_0015_ITG_corregido.xml'
+tree.write(new_arc, encoding='utf-8', xml_declaration=True)
